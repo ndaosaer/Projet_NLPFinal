@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Classifier Professional - Batch Analysis</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #60a5fa;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --bg-dark: #111827;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .navbar-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1.125rem;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 1.375rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-stats {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .stat-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+        
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 100px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        
+        .status-text {
+            font-size: 0.875rem;
+            color: var(--success);
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 480px 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-4px);
+        }
+        
+        .card-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--bg-tertiary);
+            padding: 0.375rem;
+            border-radius: 12px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .tab.active {
+            background: var(--bg-primary);
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: var(--bg-secondary);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-zone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .upload-zone:hover::before,
+        .upload-zone.dragover::before {
+            opacity: 1;
+        }
+        
+        .upload-zone:hover {
+            border-color: var(--primary);
+        }
+        
+        .upload-zone.dragover {
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.05);
+        }
+        
+        .upload-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+            position: relative;
+        }
+        
+        .upload-icon svg {
+            width: 36px;
+            height: 36px;
+            color: white;
+        }
+        
+        .upload-text {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-subtext {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .file-formats {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .format-badge {
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .files-list {
+            margin-top: 1.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+        
+        .file-item:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+        
+        .file-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary) 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .file-details {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: block;
+        }
+        
+        .file-size {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .file-remove {
+            padding: 0.375rem 0.75rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 6px;
+            color: var(--danger);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .file-remove:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+        
+        .textarea-container {
+            position: relative;
+        }
+        
+        .cv-textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            resize: vertical;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.2s ease;
+        }
+        
+        .cv-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--bg-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .char-count {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: var(--bg-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .options-section {
+            margin: 1.5rem 0;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        
+        .option-card {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .option-card:hover {
+            border-color: var(--primary-light);
+            background: var(--bg-tertiary);
+        }
+        
+        .option-card.active {
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.05);
+        }
+        
+        .option-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+        
+        .option-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.625rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .btn svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .loading.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .spinner {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 1.5rem;
+            border: 4px solid var(--border-light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .loading-progress {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .results {
+            display: none;
+        }
+        
+        .results.active {
+            display: block;
+            animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .batch-summary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .summary-item {
+            text-align: center;
+        }
+        
+        .summary-value {
+            font-size: 3rem;
+            font-weight: 900;
+            display: block;
+            line-height: 1;
+        }
+        
+        .summary-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.5rem;
+        }
+        
+        .result-card {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .result-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateX(4px);
+        }
+        
+        .result-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .result-file-name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .result-badge {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+        
+        .result-confidence-badge {
+            padding: 0.375rem 0.875rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+        
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .result-detail-item {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .detail-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-stats {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .batch-summary {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <div class="logo-icon">CV</div>
+                <span class="logo-text">CV Classifier Pro</span>
+            </div>
+            <div class="nav-stats">
+                <div class="stat-badge">
+                    <span class="stat-value" id="totalClassifications">0</span>
+                    <span class="stat-label">Total Analyses</span>
+                </div>
+                <div class="stat-badge">
+                    <span class="stat-value" id="avgConfidence">0%</span>
+                    <span class="stat-label">Avg Confidence</span>
+                </div>
+                <div class="status-pill">
+                    <div class="status-dot"></div>
+                    <span class="status-text">API Ready</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1 class="hero-title">Intelligent CV Classification</h1>
+            <p class="hero-subtitle">Upload single or multiple CVs for instant AI-powered analysis</p>
+        </div>
+
+        <div class="main-grid">
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Input Method</h2>
+                        <p class="card-subtitle">Choose how you want to submit your CV(s)</p>
+                    </div>
+                    
+                    <div class="tabs">
+                        <button class="tab active" data-tab="upload">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                            Upload Files
+                        </button>
+                        <button class="tab" data-tab="paste">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Paste Text
+                        </button>
+                    </div>
+                    
+                    <div class="tab-content active" data-content="upload">
+                        <div class="upload-zone" id="uploadZone">
+                            <div class="upload-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                </svg>
+                            </div>
+                            <div class="upload-text">Drop your files here</div>
+                            <div class="upload-subtext">or click to browse (multiple files supported)</div>
+                            <div class="file-formats">
+                                <span class="format-badge">.pdf</span>
+                                <span class="format-badge">.docx</span>
+                                <span class="format-badge">.txt</span>
+                                <span class="format-badge">.tex</span>
+                            </div>
+                            <input type="file" id="fileInput" class="file-input" accept=".pdf,.docx,.txt,.tex" multiple>
+                        </div>
+                        
+                        <div class="files-list" id="filesList"></div>
+                        
+                        <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+                            <button class="btn btn-secondary" id="clearFilesBtn" style="flex: 1;" disabled>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                                Clear All
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" data-content="paste">
+                        <div class="textarea-container">
+                            <textarea 
+                                class="cv-textarea" 
+                                id="cvText" 
+                                placeholder="Paste your CV text here...&#10;&#10;Example:&#10;Senior Software Engineer with 5 years of experience in Python and machine learning..."></textarea>
+                            <div class="char-count"><span id="charCount">0</span> characters</div>
+                        </div>
+                    </div>
+                    
+                    <div class="options-section">
+                        <div class="card-header" style="margin-bottom: 1rem;">
+                            <h3 class="card-title" style="font-size: 1.125rem;">Analysis Options</h3>
+                        </div>
+                        
+                        <div class="options-grid">
+                            <label class="option-card active">
+                                <input type="checkbox" class="option-checkbox" id="extractSkills" checked>
+                                <span class="option-label">Extract Skills</span>
+                            </label>
+                            <label class="option-card active">
+                                <input type="checkbox" class="option-checkbox" id="recommendJobs" checked>
+                                <span class="option-label">Recommend Jobs</span>
+                            </label>
+                            <label class="option-card active">
+                                <input type="checkbox" class="option-checkbox" id="saveHistory" checked>
+                                <span class="option-label">Save History</span>
+                            </label>
+                            <label class="option-card">
+                                <input type="checkbox" class="option-checkbox" id="detailedAnalysis">
+                                <span class="option-label">Detailed Report</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="analyzeBtn" style="width: 100%; margin-top: 1.5rem;" disabled>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <span id="analyzeBtnText">Analyze Now</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Analyzing CVs...</div>
+                    <div class="loading-progress" id="loadingProgress">Processing 0 of 0</div>
+                </div>
+                
+                <div class="results" id="results">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let selectedFiles = [];
+        let currentTextInput = null;
+        let inputType = 'file';
+        
+        // Elements
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const filesList = document.getElementById('filesList');
+        const clearFilesBtn = document.getElementById('clearFilesBtn');
+        const cvText = document.getElementById('cvText');
+        const charCount = document.getElementById('charCount');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const analyzeBtnText = document.getElementById('analyzeBtnText');
+        const loading = document.getElementById('loading');
+        const loadingProgress = document.getElementById('loadingProgress');
+        const results = document.getElementById('results');
+        
+        function normalizeConfidence(value) {
+            if (value >= 0 && value <= 1) return value;
+            if (value > 1 && value <= 100) return value / 10;
+            if (value > 100) return value / 10000;
+            return value;
+        }
+        
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.querySelector(`[data-content="${tabName}"]`).classList.add('active');
+                
+                inputType = tabName === 'upload' ? 'file' : 'text';
+                updateAnalyzeButton();
+            });
+        });
+        
+        // Upload zone
+        uploadZone.addEventListener('click', () => fileInput.click());
+        
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+        
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            addFiles(files);
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            addFiles(files);
+            fileInput.value = '';
+        });
+        
+        function addFiles(files) {
+            const validExtensions = ['.pdf', '.docx', '.txt', '.tex'];
+            
+            files.forEach(file => {
+                const fileName = file.name.toLowerCase();
+                const isValid = validExtensions.some(ext => fileName.endsWith(ext));
+                
+                if (isValid && !selectedFiles.find(f => f.name === file.name)) {
+                    selectedFiles.push(file);
+                }
+            });
+            
+            renderFilesList();
+            updateAnalyzeButton();
+        }
+        
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            renderFilesList();
+            updateAnalyzeButton();
+        }
+        
+        function clearAllFiles() {
+            selectedFiles = [];
+            renderFilesList();
+            updateAnalyzeButton();
+        }
+        
+        function renderFilesList() {
+            if (selectedFiles.length === 0) {
+                filesList.innerHTML = '';
+                clearFilesBtn.disabled = true;
+                return;
+            }
+            
+            clearFilesBtn.disabled = false;
+            
+            filesList.innerHTML = selectedFiles.map((file, index) => {
+                const ext = file.name.split('.').pop().toUpperCase();
+                return `
+                    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-icon">${ext}</div>
+                            <div class="file-details">
+                                <span class="file-name">${file.name}</span>
+                                <span class="file-size">${formatFileSize(file.size)}</span>
+                            </div>
+                        </div>
+                        <button class="file-remove" onclick="removeFile(${index})">Remove</button>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+        
+        function updateAnalyzeButton() {
+            if (inputType === 'file') {
+                analyzeBtn.disabled = selectedFiles.length === 0;
+                analyzeBtnText.textContent = selectedFiles.length > 1 
+                    ? `Analyze ${selectedFiles.length} CVs` 
+                    : 'Analyze Now';
+            } else {
+                const textLength = cvText.value.length;
+                analyzeBtn.disabled = textLength < 50;
+                analyzeBtnText.textContent = 'Analyze Now';
+            }
+        }
+        
+        clearFilesBtn.addEventListener('click', clearAllFiles);
+        
+        // Text area
+        cvText.addEventListener('input', () => {
+            const count = cvText.value.length;
+            charCount.textContent = count;
+            currentTextInput = cvText.value;
+            updateAnalyzeButton();
+        });
+        
+        // Option cards
+        document.querySelectorAll('.option-card').forEach(card => {
+            const checkbox = card.querySelector('.option-checkbox');
+            checkbox.addEventListener('change', () => {
+                card.classList.toggle('active', checkbox.checked);
+            });
+        });
+        
+        // Analyze button
+        analyzeBtn.addEventListener('click', async () => {
+            if (inputType === 'file' && selectedFiles.length === 0) return;
+            if (inputType === 'text' && !currentTextInput) return;
+            
+            try {
+                loading.classList.add('active');
+                results.classList.remove('active');
+                results.innerHTML = '';
+                analyzeBtn.disabled = true;
+                
+                if (inputType === 'file') {
+                    await analyzeBatch();
+                } else {
+                    await analyzeSingle();
+                }
+                
+                updateStats();
+                
+            } catch (error) {
+                alert('Error analyzing CV: ' + error.message);
+            } finally {
+                loading.classList.remove('active');
+                updateAnalyzeButton();
+            }
+        });
+        
+        async function analyzeBatch() {
+            const params = new URLSearchParams({
+                extract_skills: document.getElementById('extractSkills').checked,
+                recommend_jobs: document.getElementById('recommendJobs').checked,
+                save_to_history: document.getElementById('saveHistory').checked
+            });
+            
+            const analysisResults = [];
+            let successCount = 0;
+            let failCount = 0;
+            
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i];
+                loadingProgress.textContent = `Processing ${i + 1} of ${selectedFiles.length}`;
+                
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    
+                    const response = await fetch(`${API_URL}/upload-cv?${params}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        analysisResults.push({
+                            filename: file.name,
+                            success: true,
+                            data: data
+                        });
+                        successCount++;
+                    } else {
+                        analysisResults.push({
+                            filename: file.name,
+                            success: false,
+                            error: 'Analysis failed'
+                        });
+                        failCount++;
+                    }
+                } catch (error) {
+                    analysisResults.push({
+                        filename: file.name,
+                        success: false,
+                        error: error.message
+                    });
+                    failCount++;
+                }
+            }
+            
+            displayBatchResults(analysisResults, successCount, failCount);
+        }
+        
+        async function analyzeSingle() {
+            let response;
+            
+            if (document.getElementById('extractSkills').checked) {
+                response = await fetch(`${API_URL}/analyze-skills?recommend_jobs=${document.getElementById('recommendJobs').checked}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ resume_text: currentTextInput })
+                });
+            } else {
+                response = await fetch(`${API_URL}/predict?include_all_probabilities=true`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ resume_text: currentTextInput })
+                });
+            }
+            
+            if (!response.ok) throw new Error('Analysis failed');
+            
+            const data = await response.json();
+            displaySingleResult(data);
+        }
+        
+        function displayBatchResults(analysisResults, successCount, failCount) {
+            let html = `
+                <div class="batch-summary">
+                    <div class="summary-item">
+                        <span class="summary-value">${analysisResults.length}</span>
+                        <span class="summary-label">Total CVs</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value">${successCount}</span>
+                        <span class="summary-label">Successful</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value">${failCount}</span>
+                        <span class="summary-label">Failed</span>
+                    </div>
+                </div>
+            `;
+            
+            analysisResults.forEach(result => {
+                if (result.success) {
+                    const data = result.data;
+                    const confidence = normalizeConfidence(data.confidence);
+                    
+                    html += `
+                        <div class="result-card">
+                            <div class="result-card-header">
+                                <div class="result-file-name">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                    ${result.filename}
+                                </div>
+                                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                                    <span class="result-badge">${data.predicted_category}</span>
+                                    <span class="result-confidence-badge">${(confidence * 100).toFixed(1)}%</span>
+                                </div>
+                            </div>
+                            <div class="result-details">
+                                ${data.skills_summary ? `
+                                    <div class="result-detail-item">
+                                        <div class="detail-label">Technical Skills</div>
+                                        <div class="detail-value">${data.skills_summary.total_technical_skills || 0}</div>
+                                    </div>
+                                    <div class="result-detail-item">
+                                        <div class="detail-label">Frameworks</div>
+                                        <div class="detail-value">${data.skills_summary.total_frameworks || 0}</div>
+                                    </div>
+                                    <div class="result-detail-item">
+                                        <div class="detail-label">Tools</div>
+                                        <div class="detail-value">${data.skills_summary.total_tools || 0}</div>
+                                    </div>
+                                ` : ''}
+                                ${data.job_recommendations && data.job_recommendations.length > 0 ? `
+                                    <div class="result-detail-item">
+                                        <div class="detail-label">Top Match</div>
+                                        <div class="detail-value">${data.job_recommendations[0].job_title}</div>
+                                    </div>
+                                ` : ''}
+                                <div class="result-detail-item">
+                                    <div class="detail-label">Processing Time</div>
+                                    <div class="detail-value">${data.processing_time_ms || 0}ms</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="result-card" style="border-color: var(--danger);">
+                            <div class="result-card-header">
+                                <div class="result-file-name">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    ${result.filename}
+                                </div>
+                                <span class="result-confidence-badge" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                                    Failed
+                                </span>
+                            </div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">
+                                Error: ${result.error}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            results.innerHTML = html;
+            results.classList.add('active');
+        }
+        
+        function displaySingleResult(data) {
+            // Use same logic as before for single result
+            let category, confidence;
+            
+            if (data.predicted_category) {
+                category = data.predicted_category;
+                confidence = normalizeConfidence(data.confidence);
+            } else if (data.category) {
+                category = data.category;
+                confidence = normalizeConfidence(data.confidence);
+            } else {
+                category = 'Analysis Complete';
+                confidence = 0.95;
+            }
+            
+            results.innerHTML = `
+                <div class="batch-summary">
+                    <div class="summary-item">
+                        <span class="summary-value">${category}</span>
+                        <span class="summary-label">Category</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value">${(confidence * 100).toFixed(1)}%</span>
+                        <span class="summary-label">Confidence</span>
+                    </div>
+                </div>
+            `;
+            
+            results.classList.add('active');
+        }
+        
+        async function updateStats() {
+            try {
+                const response = await fetch(`${API_URL}/statistics`);
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('totalClassifications').textContent = stats.total_classifications;
+                    const avgConf = normalizeConfidence(stats.avg_confidence);
+                    document.getElementById('avgConfidence').textContent = (avgConf * 100).toFixed(0) + '%';
+                }
+            } catch (error) {
+                console.error('Error updating stats:', error);
+            }
+        }
+        
+        // Initialize
+        updateStats();
+        setInterval(updateStats, 30000);
+    </script>
+</body>
+</html>

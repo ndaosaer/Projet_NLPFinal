@@ -1,0 +1,23 @@
+artifact_path: file:///C:/Users/Easy Services Pro/Projet_NLPfinal/mlruns/476093931084201033/models/m-c91b0346a30c4534b33e55546d887b76/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.4
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.3.2
+    skops_trusted_types: null
+mlflow_version: 3.9.0
+model_id: m-c91b0346a30c4534b33e55546d887b76
+model_size_bytes: 1000970
+model_uuid: m-c91b0346a30c4534b33e55546d887b76
+prompts: null
+run_id: 3c7997f25cbb4498b1c5f29b409a23c4
+utc_time_created: '2026-02-05 19:18:44.563151'

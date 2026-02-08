@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/Easy Services Pro/Projet_NLPfinal/api/frontend/mlruns/686229934293620533/models/m-26d6beefec3a4c058a37dd2650891001/artifacts
+creation_timestamp: 1770558209061
+experiment_id: '686229934293620533'
+last_updated_timestamp: 1770558224029
+model_id: m-26d6beefec3a4c058a37dd2650891001
+model_type: ''
+name: model
+source_run_id: 50bbcdafed334d038e2f0e873aaa9a17
+status: 2
+status_message: null

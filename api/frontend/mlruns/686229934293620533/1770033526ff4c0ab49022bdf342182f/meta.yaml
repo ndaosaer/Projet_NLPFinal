@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/Easy Services Pro/Projet_NLPfinal/api/frontend/mlruns/686229934293620533/1770033526ff4c0ab49022bdf342182f/artifacts
+end_time: 1770558251474
+entry_point_name: ''
+experiment_id: '686229934293620533'
+lifecycle_stage: active
+run_id: 1770033526ff4c0ab49022bdf342182f
+run_name: SVM_Linear
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1770558237563
+status: 3
+tags: []
+user_id: Easy Services Pro

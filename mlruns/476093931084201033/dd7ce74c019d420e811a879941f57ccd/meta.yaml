@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/Easy Services Pro/Projet_NLPfinal/mlruns/476093931084201033/dd7ce74c019d420e811a879941f57ccd/artifacts
+end_time: 1770473121116
+entry_point_name: ''
+experiment_id: '476093931084201033'
+lifecycle_stage: active
+run_id: dd7ce74c019d420e811a879941f57ccd
+run_name: Naive_Bayes
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1770473107105
+status: 3
+tags: []
+user_id: Easy Services Pro

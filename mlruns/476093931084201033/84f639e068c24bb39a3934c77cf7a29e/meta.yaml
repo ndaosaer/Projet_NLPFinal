@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/Easy Services Pro/Projet_NLPfinal/mlruns/476093931084201033/84f639e068c24bb39a3934c77cf7a29e/artifacts
+end_time: 1770472873472
+entry_point_name: ''
+experiment_id: '476093931084201033'
+lifecycle_stage: active
+run_id: 84f639e068c24bb39a3934c77cf7a29e
+run_name: Logistic_Regression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1770472835755
+status: 3
+tags: []
+user_id: Easy Services Pro

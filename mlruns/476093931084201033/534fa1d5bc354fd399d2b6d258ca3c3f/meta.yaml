@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/Easy Services Pro/Projet_NLPfinal/mlruns/476093931084201033/534fa1d5bc354fd399d2b6d258ca3c3f/artifacts
+end_time: 1770472890632
+entry_point_name: ''
+experiment_id: '476093931084201033'
+lifecycle_stage: active
+run_id: 534fa1d5bc354fd399d2b6d258ca3c3f
+run_name: Random_Forest
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1770472873557
+status: 3
+tags: []
+user_id: Easy Services Pro

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fichiers .py vs Notebooks</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 50px;
+            text-align: center;
+        }
+        .content { padding: 50px; }
+        .section { margin-bottom: 40px; }
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        .card {
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .card-py {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .card-notebook {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        .alert {
+            background: #fef3c7;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .success {
+            background: #d1fae5;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Fichiers .py vs Notebooks</h1>
+            <p style="font-size: 1.2em;">Comprendre la différence et comment les utiliser</p>
+        </header>
+        
+        <div class="content">
+            <section class="section">
+                <h2>🎯 Le Problème que Vous Avez Soulevé</h2>
+                
+                <div class="alert">
+                    <h3 style="color: #92400e; margin-bottom: 10px;">Votre Question</h3>
+                    <p><strong>"Si les notebooks contiennent tout le code, à quoi servent les fichiers .py dans src/ ?"</strong></p>
+                    <p style="margin-top: 10px;">➡️ Excellente question ! Il y a effectivement une confusion.</p>
+                </div>
+                
+                <div class="success">
+                    <h3 style="color: #065f46; margin-bottom: 10px;">La Réponse</h3>
+                    <p><strong>Les fichiers .py sont la "bibliothèque" que les notebooks utilisent.</strong></p>
+                    <p style="margin-top: 10px;">Les notebooks IMPORTENT les classes depuis src/ au lieu de dupliquer le code.</p>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>📊 Comparaison Visuelle</h2>
+                
+                <div class="comparison">
+                    <div class="card card-py">
+                        <h3>📄 Fichiers .py (src/)</h3>
+                        <ul style="margin-left: 20px; margin-top: 15px;">
+                            <li><strong>Contenu:</strong> Classes et fonctions réutilisables</li>
+                            <li><strong>Rôle:</strong> Bibliothèque de code</li>
+                            <li><strong>Exécution:</strong> Importés par d'autres fichiers</li>
+                            <li><strong>Exemple:</strong> TextCleaner, CVFeatureExtractor</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card card-notebook">
+                        <h3>📓 Notebooks (.ipynb)</h3>
+                        <ul style="margin-left: 20px; margin-top: 15px;">
+                            <li><strong>Contenu:</strong> Code + Texte + Visualisations</li>
+                            <li><strong>Rôle:</strong> Expérimentation et présentation</li>
+                            <li><strong>Exécution:</strong> Cellule par cellule</li>
+                            <li><strong>Exemple:</strong> Analyse, graphiques, tests</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>💻 Exemple Concret</h2>
+                
+                <h3 style="margin-top: 30px; color: #f5576c;">❌ MAUVAISE Approche (Duplication)</h3>
+                <div class="code-block">
+# Dans le notebook 02_preprocessing.ipynb
+# ❌ TOUT le code est dans le notebook
+
+class TextCleaner:
+    def __init__(self):
+        # 50 lignes de code...
+    
+    def clean_text(self, text):
+        # 30 lignes de code...
+
+# Utilisation
+cleaner = TextCleaner()
+df['cleaned_text'] = df['Resume'].apply(cleaner.clean_text)
+                </div>
+                <p style="color: #ef4444; font-weight: bold;">Problèmes:</p>
+                <ul style="margin-left: 25px;">
+                    <li>Code dupliqué si utilisé dans plusieurs notebooks</li>
+                    <li>Difficile à maintenir</li>
+                    <li>Notebook très long</li>
+                </ul>
+                
+                <h3 style="margin-top: 30px; color: #10b981;">✅ BONNE Approche (Import depuis src/)</h3>
+                <div class="code-block">
+# Dans le notebook 02_preprocessing.ipynb
+# ✅ Importer la classe depuis src/
+
+import sys
+sys.path.append('..')
+
+from src.preprocessing.text_cleaner import TextCleaner
+
+# Utilisation
+cleaner = TextCleaner()
+df['cleaned_text'] = df['Resume'].apply(cleaner.clean_text)
+                </div>
+                <p style="color: #10b981; font-weight: bold;">Avantages:</p>
+                <ul style="margin-left: 25px;">
+                    <li>Code réutilisable</li>
+                    <li>Notebook concis et lisible</li>
+                    <li>Un seul endroit à modifier si bug</li>
+                    <li>Professionnel</li>
+                </ul>
+            </section>
+            
+            <section class="section">
+                <h2>🗂️ Rôle de Chaque Fichier .py</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fichier .py</th>
+                            <th>Ce qu'il contient</th>
+                            <th>Utilisé par quel notebook</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>src/data/load_data.py</strong></td>
+                            <td>Classe CVDataLoader<br>Charge et explore les données</td>
+                            <td>01_EDA.ipynb</td>
+                        </tr>
+                        <tr>
+                            <td><strong>src/preprocessing/text_cleaner.py</strong></td>
+                            <td>Classe TextCleaner<br>Nettoie le texte</td>
+                            <td>02_preprocessing.ipynb<br>04_modeling.ipynb<br>API</td>
+                        </tr>
+                        <tr>
+                            <td><strong>src/preprocessing/feature_extractor.py</strong></td>
+                            <td>Classe CVFeatureExtractor<br>Créé les features TF-IDF</td>
+                            <td>03_feature_extraction.ipynb<br>API</td>
+                        </tr>
+                        <tr>
+                            <td><strong>src/models/train.py</strong></td>
+                            <td>Classe CVClassifierTrainer<br>Entraîne les modèles</td>
+                            <td>04_modeling.ipynb</td>
+                        </tr>
+                        <tr>
+                            <td><strong>api/main.py</strong></td>
+                            <td>API FastAPI<br>Utilise TOUS les fichiers ci-dessus</td>
+                            <td>05_API_testing.ipynb</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <section class="section">
+                <h2>🔄 Workflow Correct</h2>
+                
+                <div style="background: #f7fafc; padding: 30px; border-radius: 12px; margin: 20px 0;">
+                    <h3 style="color: #667eea; margin-bottom: 20px;">Comment ça fonctionne :</h3>
+                    
+                    <div style="display: flex; align-items: center; gap: 20px; margin: 20px 0; flex-wrap: wrap;">
+                        <div style="background: #667eea; color: white; padding: 20px; border-radius: 8px; flex: 1; min-width: 200px;">
+                            <strong>1. Fichiers .py</strong><br>
+                            Contiennent les classes<br>
+                            (code réutilisable)
+                        </div>
+                        <span style="font-size: 2em;">→</span>
+                        <div style="background: #f5576c; color: white; padding: 20px; border-radius: 8px; flex: 1; min-width: 200px;">
+                            <strong>2. Notebooks</strong><br>
+                            IMPORTENT ces classes<br>
+                            (utilisent le code)
+                        </div>
+                        <span style="font-size: 2em;">→</span>
+                        <div style="background: #10b981; color: white; padding: 20px; border-radius: 8px; flex: 1; min-width: 200px;">
+                            <strong>3. Résultats</strong><br>
+                            Analyses, graphiques<br>
+                            Modèles sauvegardés
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>📝 Exemple Complet : Notebook 02</h2>
+                
+                <h3 style="margin-top: 20px; color: #667eea;">Structure du Notebook 02_preprocessing.ipynb</h3>
+                
+                <div class="code-block">
+# CELLULE 1: Imports
+import pandas as pd
+import sys
+sys.path.append('..')
+
+# ✅ IMPORTER depuis src/
+from src.preprocessing.text_cleaner import TextCleaner
+
+# CELLULE 2: Charger données
+df = pd.read_csv('../data/raw/resume_dataset.csv')
+
+# CELLULE 3: Initialiser la classe
+cleaner = TextCleaner()  # ← Classe importée depuis src/
+
+# CELLULE 4: Utiliser la classe
+df = cleaner.clean_dataframe(df, text_column='Resume')
+
+# CELLULE 5: Visualisations
+# ... créer des graphiques ...
+
+# CELLULE 6: Sauvegarder
+df.to_csv('../data/processed/resume_cleaned.csv')
+                </div>
+                
+                <p style="margin-top: 20px;"><strong>✅ Le notebook est court et clair</strong></p>
+                <p><strong>✅ Tout le code complexe est dans src/preprocessing/text_cleaner.py</strong></p>
+            </section>
+            
+            <section class="section">
+                <h2>🎯 Résumé Final</h2>
+                
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px;">
+                    <h3 style="color: white; margin-bottom: 20px;">Ce que vous devez faire :</h3>
+                    
+                    <div style="margin: 20px 0;">
+                        <p style="font-size: 1.1em; margin-bottom: 10px;"><strong>1. Les fichiers .py dans src/</strong></p>
+                        <p style="margin-left: 20px;">→ NE PAS les exécuter directement</p>
+                        <p style="margin-left: 20px;">→ Ce sont des bibliothèques de code</p>
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <p style="font-size: 1.1em; margin-bottom: 10px;"><strong>2. Les notebooks</strong></p>
+                        <p style="margin-left: 20px;">→ EXÉCUTER dans Jupyter</p>
+                        <p style="margin-left: 20px;">→ Ils importent depuis src/</p>
+                        <p style="margin-left: 20px;">→ Ils créent les visualisations et résultats</p>
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <p style="font-size: 1.1em; margin-bottom: 10px;"><strong>3. L'API (api/main.py)</strong></p>
+                        <p style="margin-left: 20px;">→ Utilise TOUT le code de src/</p>
+                        <p style="margin-left: 20px;">→ Lancer avec : uvicorn main:app --reload</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>❓ FAQ</h2>
+                
+                <div style="background: #f7fafc; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <h4 style="color: #667eea;">Q: Dois-je modifier les fichiers .py ?</h4>
+                    <p><strong>R:</strong> NON, sauf si vous voulez changer le comportement des classes. Les notebooks importent ces classes telles quelles.</p>
+                </div>
+                
+                <div style="background: #f7fafc; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <h4 style="color: #667eea;">Q: Puis-je exécuter les fichiers .py directement ?</h4>
+                    <p><strong>R:</strong> Oui, chacun a un <code>if __name__ == "__main__"</code> pour des tests. Mais normalement vous les importez dans les notebooks.</p>
+                </div>
+                
+                <div style="background: #f7fafc; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <h4 style="color: #667eea;">Q: Les notebooks version corrigée sont-ils plus courts ?</h4>
+                    <p><strong>R:</strong> OUI ! Car ils importent au lieu de dupliquer le code.</p>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

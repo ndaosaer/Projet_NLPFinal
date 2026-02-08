@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Classifier Pro - Classification Intelligente de CV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #ec4899;
+            --accent: #14b8a6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #334155;
+            --shadow: rgba(99, 102, 241, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(20, 184, 166, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Header */
+        header {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 8px 20px var(--shadow);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Main container */
+        .container {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Grid layout */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 80px rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        textarea, input[type="file"] {
+            width: 100%;
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            resize: vertical;
+        }
+
+        textarea {
+            min-height: 300px;
+        }
+
+        textarea:focus, input[type="file"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--shadow);
+        }
+
+        textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary-light);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Results */
+        .result-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-category {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .confidence-badge {
+            padding: 0.5rem 1.5rem;
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid var(--success);
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--success);
+        }
+
+        .probabilities {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .probability-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .probability-label {
+            flex: 0 0 200px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .probability-bar {
+            flex: 1;
+            height: 30px;
+            background: rgba(51, 65, 85, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .probability-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 8px;
+            transition: width 1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .probability-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .probability-value {
+            flex: 0 0 60px;
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--primary-light);
+        }
+
+        /* Stats section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(51, 65, 85, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary);
+        }
+
+        .stat-card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Features section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid var(--error);
+            color: var(--error);
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert-info {
+            background: rgba(99, 102, 241, 0.1);
+            border: 2px solid var(--primary);
+            color: var(--primary-light);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid, .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-stats {
+                display: none;
+            }
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* File upload custom */
+        .file-upload-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            background: var(--bg-input);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .file-upload-icon {
+            font-size: 2rem;
+        }
+
+        .file-name {
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">📄</div>
+                <div class="logo-text">CV Classifier Pro</div>
+            </div>
+            <div class="header-stats">
+                <div class="stat">
+                    <div class="stat-value" id="totalClassified">0</div>
+                    <div class="stat-label">CV Classés</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="avgConfidence">0%</div>
+                    <div class="stat-label">Confiance Moy.</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="apiStatus">●</div>
+                    <div class="stat-label">API Status</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Grid Layout -->
+        <div class="grid">
+            <!-- Input Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">✍️</div>
+                    <h2 class="card-title">Texte du CV</h2>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cvText">Collez le contenu du CV ici</label>
+                    <textarea 
+                        id="cvText" 
+                        placeholder="Collez le texte complet du CV ici...
+
+Exemple:
+Experienced Python developer with 5+ years in machine learning and data science.
+
+SKILLS:
+- Python, TensorFlow, PyTorch, scikit-learn
+- Data analysis with pandas, numpy
+- SQL, MongoDB
+- Cloud: AWS, GCP
+
+EXPERIENCE:
+- Built recommendation systems
+- Developed predictive models
+- Led data science projects"
+                    ></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="classifyCV()">
+                        <span id="classifyBtnText">🚀 Classifier le CV</span>
+                        <span id="classifyBtnSpinner" class="spinner hidden"></span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearForm()">
+                        🗑️ Effacer
+                    </button>
+                </div>
+            </div>
+
+            <!-- File Upload Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">📎</div>
+                    <h2 class="card-title">Upload de Fichier</h2>
+                </div>
+
+                <div class="form-group">
+                    <label>Uploader un fichier CV (.txt, .pdf)</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="fileInput" accept=".txt,.pdf" onchange="handleFileUpload(event)">
+                        <label for="fileInput" class="file-upload-label">
+                            <div>
+                                <div class="file-upload-icon">📄</div>
+                                <div>Cliquez ou glissez-déposez un fichier</div>
+                                <div class="file-name" id="fileName">Aucun fichier sélectionné</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- API Info -->
+                <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(51, 65, 85, 0.3); border-radius: 12px;">
+                    <h3 style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.9rem; text-transform: uppercase;">Informations API</h3>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--text-muted); line-height: 1.8;">
+                        <div><strong style="color: var(--text-secondary);">Endpoint:</strong> <span id="apiEndpoint">http://localhost:8000</span></div>
+                        <div><strong style="color: var(--text-secondary);">Version:</strong> <span id="apiVersion">1.0.0</span></div>
+                        <div><strong style="color: var(--text-secondary);">Catégories:</strong> <span id="apiCategories">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">📊</div>
+                    <h2 class="card-title">Résultats de la Classification</h2>
+                </div>
+
+                <div id="resultsContent"></div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">🤖</div>
+                <h3 class="feature-title">IA Avancée</h3>
+                <p class="feature-desc">Modèles de machine learning entraînés sur des milliers de CV pour une précision optimale</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Classification Rapide</h3>
+                <p class="feature-desc">Résultats instantanés en moins d'une seconde grâce à notre infrastructure optimisée</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">Haute Précision</h3>
+                <p class="feature-desc">Score de confiance détaillé pour chaque catégorie identifiée</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📈</div>
+                <h3 class="feature-title">Analyse Complète</h3>
+                <p class="feature-desc">Probabilités détaillées pour toutes les catégories possibles</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <h3 class="feature-title">Sécurisé</h3>
+                <p class="feature-desc">Vos données sont traitées en toute sécurité et ne sont jamais stockées</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🌐</div>
+                <h3 class="feature-title">API REST</h3>
+                <p class="feature-desc">Intégration facile dans vos applications existantes via notre API</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">CV Classifier Pro - Propulsé par Machine Learning & NLP</p>
+        <div class="footer-links">
+            <a href="http://localhost:8000/docs" target="_blank" class="footer-link">Documentation API</a>
+            <a href="http://localhost:5000" target="_blank" class="footer-link">MLflow Dashboard</a>
+            <a href="#" class="footer-link">À propos</a>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let totalClassifications = 0;
+        let totalConfidence = 0;
+
+        // Check API status on load
+        window.addEventListener('load', async () => {
+            await checkAPIStatus();
+            await loadAPIInfo();
+        });
+
+        async function checkAPIStatus() {
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                
+                const statusElement = document.getElementById('apiStatus');
+                if (data.status === 'healthy') {
+                    statusElement.textContent = '●';
+                    statusElement.style.color = '#10b981';
+                } else {
+                    statusElement.textContent = '●';
+                    statusElement.style.color = '#f59e0b';
+                }
+            } catch (error) {
+                const statusElement = document.getElementById('apiStatus');
+                statusElement.textContent = '●';
+                statusElement.style.color = '#ef4444';
+            }
+        }
+
+        async function loadAPIInfo() {
+            try {
+                const categoriesResponse = await fetch(`${API_URL}/categories`);
+                const categoriesData = await categoriesResponse.json();
+                
+                document.getElementById('apiCategories').textContent = categoriesData.total_categories;
+
+                const rootResponse = await fetch(`${API_URL}/`);
+                const rootData = await rootResponse.json();
+                document.getElementById('apiVersion').textContent = rootData.version || '1.0.0';
+            } catch (error) {
+                console.error('Erreur lors du chargement des infos API:', error);
+            }
+        }
+
+        async function classifyCV() {
+            const cvText = document.getElementById('cvText').value.trim();
+            
+            if (!cvText) {
+                showAlert('error', 'Veuillez entrer le texte du CV');
+                return;
+            }
+
+            if (cvText.length < 50) {
+                showAlert('error', 'Le texte du CV est trop court (minimum 50 caractères)');
+                return;
+            }
+
+            // Show loading state
+            const btnText = document.getElementById('classifyBtnText');
+            const btnSpinner = document.getElementById('classifyBtnSpinner');
+            btnText.classList.add('hidden');
+            btnSpinner.classList.remove('hidden');
+
+            try {
+                const response = await fetch(`${API_URL}/predict?include_all_probabilities=true`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        resume_text: cvText
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Erreur de classification');
+                }
+
+                const data = await response.json();
+                displayResults(data);
+                
+                // Update stats
+                totalClassifications++;
+                totalConfidence += data.confidence;
+                updateStats();
+
+                showAlert('success', 'Classification réussie!');
+            } catch (error) {
+                console.error('Erreur:', error);
+                showAlert('error', error.message);
+            } finally {
+                // Hide loading state
+                btnText.classList.remove('hidden');
+                btnSpinner.classList.add('hidden');
+            }
+        }
+
+        function displayResults(data) {
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContent = document.getElementById('resultsContent');
+
+            // Build probabilities HTML
+            let probabilitiesHTML = '';
+            if (data.all_probabilities) {
+                const sortedProbs = Object.entries(data.all_probabilities)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5);
+
+                probabilitiesHTML = '<div class="probabilities">';
+                sortedProbs.forEach(([category, prob]) => {
+                    probabilitiesHTML += `
+                        <div class="probability-item">
+                            <div class="probability-label">${category}</div>
+                            <div class="probability-bar">
+                                <div class="probability-fill" style="width: ${prob * 100}%"></div>
+                            </div>
+                            <div class="probability-value">${(prob * 100).toFixed(1)}%</div>
+                        </div>
+                    `;
+                });
+                probabilitiesHTML += '</div>';
+            }
+
+            resultsContent.innerHTML = `
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="result-category">📌 ${data.category}</div>
+                        <div class="confidence-badge">${(data.confidence * 100).toFixed(1)}% de confiance</div>
+                    </div>
+                    <h3 style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.9rem; text-transform: uppercase;">Top 5 des Catégories</h3>
+                    ${probabilitiesHTML}
+                </div>
+            `;
+
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function updateStats() {
+            document.getElementById('totalClassified').textContent = totalClassifications;
+            const avgConfidence = totalClassifications > 0 
+                ? (totalConfidence / totalClassifications * 100).toFixed(0) 
+                : 0;
+            document.getElementById('avgConfidence').textContent = avgConfidence + '%';
+        }
+
+        function clearForm() {
+            document.getElementById('cvText').value = '';
+            document.getElementById('fileInput').value = '';
+            document.getElementById('fileName').textContent = 'Aucun fichier sélectionné';
+            document.getElementById('resultsSection').classList.add('hidden');
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            document.getElementById('fileName').textContent = file.name;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let text = e.target.result;
+                
+                // Simple PDF text extraction (note: this is basic, for production use a proper library)
+                if (file.name.endsWith('.pdf')) {
+                    showAlert('info', 'Note: L\'extraction PDF est basique. Pour de meilleurs résultats, copiez le texte directement.');
+                }
+                
+                document.getElementById('cvText').value = text;
+                showAlert('success', 'Fichier chargé avec succès!');
+            };
+            
+            reader.readAsText(file);
+        }
+
+        function showAlert(type, message) {
+            // Remove existing alerts
+            const existingAlerts = document.querySelectorAll('.alert');
+            existingAlerts.forEach(alert => alert.remove());
+
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            
+            const icon = type === 'error' ? '❌' : type === 'success' ? '✅' : 'ℹ️';
+            alert.innerHTML = `
+                <span style="font-size: 1.2rem;">${icon}</span>
+                <span>${message}</span>
+            `;
+
+            const container = document.querySelector('.container');
+            container.insertBefore(alert, container.firstChild);
+
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            }, 5000);
+        }
+
+        // Auto-refresh API status every 30 seconds
+        setInterval(checkAPIStatus, 30000);
+    </script>
+</body>
+</html>
